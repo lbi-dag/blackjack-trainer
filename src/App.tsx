@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { BrainCircuit, Spade } from 'lucide-react';
+import { BookOpen, BrainCircuit, Spade } from 'lucide-react';
 import { ModeSwitch } from './components/ModeSwitch';
+import { ReferenceGuide } from './components/ReferenceGuide';
 import { StatsBar } from './components/StatsBar';
 import { TrainerBoard } from './components/TrainerBoard';
 import type { ActionAvailability, FeedbackState, Move, TrainingHand, TrainingMode } from './types/game';
@@ -8,6 +9,7 @@ import { createTrainingHand, getHandDescriptor, isPair } from './utils/deckUtils
 import { describeDecision, formatMoveLabel, getPerfectMove } from './utils/strategyEngine';
 
 const CORRECT_DELAY_MS = 900;
+type AppView = 'trainer' | 'reference';
 
 function getActionAvailability(hand: TrainingHand): ActionAvailability {
   return {
@@ -20,6 +22,7 @@ function getActionAvailability(hand: TrainingHand): ActionAvailability {
 }
 
 export default function App() {
+  const [view, setView] = useState<AppView>('trainer');
   const [mode, setMode] = useState<TrainingMode>('random');
   const [currentHand, setCurrentHand] = useState<TrainingHand>(() => createTrainingHand('random'));
   const [correct, setCorrect] = useState(0);
@@ -112,18 +115,51 @@ export default function App() {
               </div>
             </div>
           </div>
+
+          <div className="mt-5 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setView('trainer')}
+              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                view === 'trainer'
+                  ? 'border-brass-400 bg-brass-400/15 text-brass-400'
+                  : 'border-white/10 bg-white/5 text-slate-300 hover:border-white/20 hover:bg-white/10'
+              }`}
+            >
+              <BrainCircuit className="h-4 w-4" />
+              Trainer
+            </button>
+            <button
+              type="button"
+              onClick={() => setView('reference')}
+              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                view === 'reference'
+                  ? 'border-brass-400 bg-brass-400/15 text-brass-400'
+                  : 'border-white/10 bg-white/5 text-slate-300 hover:border-white/20 hover:bg-white/10'
+              }`}
+            >
+              <BookOpen className="h-4 w-4" />
+              Rules & Strategy
+            </button>
+          </div>
         </header>
 
-        <StatsBar correct={correct} attempted={attempted} mode={mode} />
-        <ModeSwitch mode={mode} onChange={setMode} />
-        <TrainerBoard
-          hand={currentHand}
-          playerLabel={getHandDescriptor(currentHand.playerCards)}
-          feedback={feedback}
-          actionAvailability={actionAvailability}
-          onMove={handleMove}
-          onNextHand={() => dealNextHand(mode)}
-        />
+        {view === 'trainer' ? (
+          <>
+            <StatsBar correct={correct} attempted={attempted} mode={mode} />
+            <ModeSwitch mode={mode} onChange={setMode} />
+            <TrainerBoard
+              hand={currentHand}
+              playerLabel={getHandDescriptor(currentHand.playerCards)}
+              feedback={feedback}
+              actionAvailability={actionAvailability}
+              onMove={handleMove}
+              onNextHand={() => dealNextHand(mode)}
+            />
+          </>
+        ) : (
+          <ReferenceGuide onReturnToTrainer={() => setView('trainer')} />
+        )}
       </div>
     </main>
   );
