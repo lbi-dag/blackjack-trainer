@@ -24,10 +24,6 @@ const moveCards = [
   },
 ];
 
-type ReferenceGuideProps = {
-  onReturnToTrainer: () => void;
-};
-
 function StrategyTable({
   title,
   subtitle,
@@ -45,11 +41,15 @@ function StrategyTable({
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-white/10">
-        <table className="min-w-full divide-y divide-white/10 text-sm">
+        <table className="min-w-full divide-y divide-white/10 text-sm table-fixed">
+          <colgroup>
+            <col className="w-[7.5rem] md:w-[8.5rem]" />
+            <col />
+          </colgroup>
           <tbody className="divide-y divide-white/10">
             {rows.map(({ label, content }) => (
               <tr key={label} className="align-top">
-                <th className="w-40 bg-white/5 px-4 py-3 text-left font-semibold text-brass-400">{label}</th>
+                <th className="bg-white/5 px-4 py-3 text-left font-semibold text-brass-400">{label}</th>
                 <td className="px-4 py-3 text-slate-200">{content}</td>
               </tr>
             ))}
@@ -60,31 +60,21 @@ function StrategyTable({
   );
 }
 
-export function ReferenceGuide({ onReturnToTrainer }: ReferenceGuideProps) {
+export function ReferenceGuide() {
   return (
     <section className="table-shell felt-sheen p-6 md:p-8">
       <div className="grid gap-6">
-        <div className="flex flex-col gap-4 rounded-[1.75rem] border border-brass-400/20 bg-charcoal-950/65 p-5 md:flex-row md:items-center md:justify-between">
-          <div>
-            <div className="flex items-center gap-3 text-brass-400">
-              <BookOpen className="h-5 w-5" />
-              <p className="text-xs uppercase tracking-[0.34em]">Reference Page</p>
-            </div>
-            <h2 className="mt-3 text-2xl font-black text-cream">Blackjack Rules and Strategy Guide</h2>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300">
-              Use this page to review the exact assumptions behind the trainer: standard 4-8 deck blackjack,
-              dealer stands on soft 17, doubling after splits is allowed, and late surrender is available on the
-              opening hand.
-            </p>
+        <div className="rounded-[1.75rem] border border-brass-400/20 bg-charcoal-950/65 p-5">
+          <div className="flex items-center gap-3 text-brass-400">
+            <BookOpen className="h-5 w-5" />
+            <p className="text-xs uppercase tracking-[0.34em]">Reference Page</p>
           </div>
-
-          <button
-            type="button"
-            onClick={onReturnToTrainer}
-            className="rounded-full border border-brass-400/40 bg-brass-400/10 px-4 py-2 text-sm font-semibold text-brass-400 transition hover:bg-brass-400/15"
-          >
-            Back to Trainer
-          </button>
+          <h2 className="mt-3 text-2xl font-black text-cream">Blackjack Rules and Strategy Guide</h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300">
+            Use this page to review the exact assumptions behind the trainer: standard 4-8 deck blackjack,
+            dealer stands on soft 17, doubling after splits is allowed, and late surrender is available on the
+            opening hand.
+          </p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">

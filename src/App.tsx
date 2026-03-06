@@ -165,7 +165,7 @@ export default function App() {
             />
           </>
         ) : (
-          <ReferenceGuide onReturnToTrainer={() => setView('trainer')} />
+          <ReferenceGuide />
         )}
       </div>
     </main>

@@ -64,16 +64,7 @@ function FeedbackPanel({ feedback, onNextHand }: Pick<TrainerBoardProps, 'feedba
     );
   }
 
-  return (
-    <div className="rounded-3xl border border-white/10 bg-white/5 px-5 py-4 text-slate-300">
-      <div className="flex items-center gap-3">
-        <ShieldAlert className="h-5 w-5 text-brass-400" />
-        <p className="text-sm leading-6">
-          Choose the perfect opening move for the player hand against the dealer up-card.
-        </p>
-      </div>
-    </div>
-  );
+  return null;
 }
 
 export function TrainerBoard({
@@ -92,33 +83,37 @@ export function TrainerBoard({
   return (
     <section className="table-shell felt-sheen p-6 md:p-8">
       <div className="grid gap-8">
-        <div className="rounded-[1.75rem] border border-white/10 bg-charcoal-950/60 p-5">
-          <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Dealer Up-card</p>
-          <div className="mt-4 flex items-center gap-4">
-            <CardPill card={hand.dealerCard} accent="dealer" />
+        <div className="grid gap-6 xl:grid-cols-[0.8fr_1.2fr] xl:items-stretch">
+          <div className="rounded-[1.75rem] border border-white/10 bg-charcoal-950/60 p-5">
+            <div className="min-h-[4.25rem]">
+              <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Dealer Up-card</p>
+            </div>
+            <div className="mt-4 flex items-center gap-4">
+              <CardPill card={hand.dealerCard} accent="dealer" />
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-emerald-500/15 bg-felt-950/60 p-5">
+            <div className="min-h-[4.25rem]">
+              <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Player Hand</p>
+              <p className="mt-2 text-xl font-semibold text-cream">{playerLabel}</p>
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-4">
+              {hand.playerCards.map((card, index) => (
+                <CardPill key={`${card.rank}-${card.suit}-${index}`} card={card} />
+              ))}
+            </div>
           </div>
         </div>
 
-        <FeedbackPanel feedback={feedback} onNextHand={onNextHand} />
-
-        <div className="rounded-[1.75rem] border border-emerald-500/15 bg-felt-950/60 p-5">
-          <div>
-            <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Player Hand</p>
-            <p className="mt-2 text-xl font-semibold text-cream">{playerLabel}</p>
-          </div>
-
-          <div className="mt-4 flex flex-wrap gap-4">
-            {hand.playerCards.map((card, index) => (
-              <CardPill key={`${card.rank}-${card.suit}-${index}`} card={card} />
-            ))}
-          </div>
-        </div>
-
-        <div className="rounded-[1.75rem] border border-brass-400/20 bg-charcoal-950/60 p-5">
+        <div className="rounded-[1.75rem] border border-white/10 bg-white/5 px-5 py-4 text-slate-300">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Memorization Aid</p>
-              <p className="mt-1 text-sm text-slate-300">Reveal the matching reference-table rule for this hand shape.</p>
+            <div className="flex items-center gap-3">
+              <ShieldAlert className="h-5 w-5 shrink-0 text-brass-400" />
+              <p className="text-sm leading-6">
+                Choose the perfect opening move for the player hand against the dealer up-card.
+              </p>
             </div>
             <button
               type="button"
@@ -129,15 +124,19 @@ export function TrainerBoard({
               {showHint ? 'Hide Hint' : 'Show Hint'}
             </button>
           </div>
+        </div>
 
-          {showHint ? (
-            <div className="mt-4 rounded-3xl border border-brass-400/25 bg-brass-400/10 px-5 py-4 text-slate-100">
+        {showHint ? (
+          <div className="rounded-[1.75rem] border border-brass-400/20 bg-charcoal-950/60 p-5">
+            <div className="rounded-3xl border border-brass-400/25 bg-brass-400/10 px-5 py-4 text-slate-100">
               <p className="text-xs uppercase tracking-[0.3em] text-brass-400">{hint.category}</p>
               <p className="mt-2 text-lg font-semibold text-cream">{hint.label}</p>
               <p className="mt-2 text-sm leading-6 text-slate-200">{hint.content}</p>
             </div>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
+
+        <FeedbackPanel feedback={feedback} onNextHand={onNextHand} />
 
         <div className="grid gap-3 md:grid-cols-5">
           {ACTIONS.map(({ move, label }) => {
