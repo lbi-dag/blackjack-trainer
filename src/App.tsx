@@ -6,6 +6,7 @@ import { StatsBar } from './components/StatsBar';
 import { TrainerBoard } from './components/TrainerBoard';
 import type { ActionAvailability, FeedbackState, Move, TrainingHand, TrainingMode } from './types/game';
 import { createTrainingHand, getHandDescriptor, isPair } from './utils/deckUtils';
+import { getStrategyHint } from './utils/strategyReference';
 import { describeDecision, formatMoveLabel, getPerfectMove } from './utils/strategyEngine';
 
 const CORRECT_DELAY_MS = 900;
@@ -28,10 +29,12 @@ export default function App() {
   const [correct, setCorrect] = useState(0);
   const [attempted, setAttempted] = useState(0);
   const [feedback, setFeedback] = useState<FeedbackState>({ status: 'idle' });
+  const [showHint, setShowHint] = useState(false);
 
   const dealNextHand = (nextMode: TrainingMode = mode) => {
     setCurrentHand(createTrainingHand(nextMode));
     setFeedback({ status: 'idle' });
+    setShowHint(false);
   };
 
   useEffect(() => {
@@ -58,6 +61,7 @@ export default function App() {
     canSplit: actionAvailability.split,
     canSurrender: actionAvailability.surrender,
   });
+  const hint = getStrategyHint(currentHand.playerCards);
 
   const handleMove = (move: Move) => {
     if (feedback.status !== 'idle') {
@@ -153,8 +157,11 @@ export default function App() {
               playerLabel={getHandDescriptor(currentHand.playerCards)}
               feedback={feedback}
               actionAvailability={actionAvailability}
+              hint={hint}
+              showHint={showHint}
               onMove={handleMove}
               onNextHand={() => dealNextHand(mode)}
+              onToggleHint={() => setShowHint((previous) => !previous)}
             />
           </>
         ) : (

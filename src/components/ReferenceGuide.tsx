@@ -1,34 +1,5 @@
 import { BookOpen, CircleHelp, Shield, SplitSquareHorizontal, Zap } from 'lucide-react';
-
-const hardRows = [
-  ['17+', 'Stand against all dealer up-cards.'],
-  ['13-16', 'Stand vs 2-6, hit vs 7-A.'],
-  ['12', 'Stand vs 4-6, hit vs 2-3 and 7-A.'],
-  ['11', 'Double vs 2-10, hit vs A.'],
-  ['10', 'Double vs 2-9, hit vs 10 or A.'],
-  ['9', 'Double vs 3-6, otherwise hit.'],
-  ['8 or less', 'Always hit.'],
-];
-
-const softRows = [
-  ['A,8-A,9', 'Stand against all dealer up-cards.'],
-  ['A,7', 'Double vs 3-6, stand vs 2,7,8, hit vs 9-A.'],
-  ['A,6', 'Double vs 3-6, otherwise hit.'],
-  ['A,4-A,5', 'Double vs 4-6, otherwise hit.'],
-  ['A,2-A,3', 'Double vs 5-6, otherwise hit.'],
-];
-
-const pairRows = [
-  ['A,A', 'Always split.'],
-  ['10,10', 'Never split. Stand.'],
-  ['9,9', 'Split vs 2-6 and 8-9, stand vs 7, 10, A.'],
-  ['8,8', 'Split vs 2-9, surrender vs 10 or A if allowed.'],
-  ['7,7', 'Split vs 2-7, otherwise hit.'],
-  ['6,6', 'Split vs 2-6, otherwise hit.'],
-  ['5,5', 'Never split. Play as hard 10.'],
-  ['4,4', 'Split vs 5-6 only with DAS, otherwise hit.'],
-  ['2,2 and 3,3', 'Split vs 2-7, otherwise hit.'],
-];
+import { hardRows, pairRows, softRows } from '../utils/strategyReference';
 
 const moveCards = [
   {
@@ -64,7 +35,7 @@ function StrategyTable({
 }: {
   title: string;
   subtitle: string;
-  rows: string[][];
+  rows: { label: string; content: string }[];
 }) {
   return (
     <section className="rounded-[1.75rem] border border-white/10 bg-charcoal-950/60 p-5">
@@ -76,7 +47,7 @@ function StrategyTable({
       <div className="overflow-hidden rounded-2xl border border-white/10">
         <table className="min-w-full divide-y divide-white/10 text-sm">
           <tbody className="divide-y divide-white/10">
-            {rows.map(([label, content]) => (
+            {rows.map(({ label, content }) => (
               <tr key={label} className="align-top">
                 <th className="w-40 bg-white/5 px-4 py-3 text-left font-semibold text-brass-400">{label}</th>
                 <td className="px-4 py-3 text-slate-200">{content}</td>

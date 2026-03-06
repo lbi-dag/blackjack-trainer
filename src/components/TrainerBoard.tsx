@@ -1,14 +1,18 @@
-import { AlertTriangle, CheckCircle2, Forward, ShieldAlert } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Forward, Lightbulb, ShieldAlert } from 'lucide-react';
 import { CardPill } from './CardPill';
 import type { ActionAvailability, FeedbackState, Move, TrainingHand } from '../types/game';
+import type { StrategyHint } from '../utils/strategyReference';
 
 type TrainerBoardProps = {
   hand: TrainingHand;
   playerLabel: string;
   feedback: FeedbackState;
   actionAvailability: ActionAvailability;
+  hint: StrategyHint;
+  showHint: boolean;
   onMove: (move: Move) => void;
   onNextHand: () => void;
+  onToggleHint: () => void;
 };
 
 const ACTIONS: { move: Move; label: string }[] = [
@@ -77,8 +81,11 @@ export function TrainerBoard({
   playerLabel,
   feedback,
   actionAvailability,
+  hint,
+  showHint,
   onMove,
   onNextHand,
+  onToggleHint,
 }: TrainerBoardProps) {
   const controlsLocked = feedback.status !== 'idle';
 
@@ -105,6 +112,31 @@ export function TrainerBoard({
               <CardPill key={`${card.rank}-${card.suit}-${index}`} card={card} />
             ))}
           </div>
+        </div>
+
+        <div className="rounded-[1.75rem] border border-brass-400/20 bg-charcoal-950/60 p-5">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Memorization Aid</p>
+              <p className="mt-1 text-sm text-slate-300">Reveal the matching reference-table rule for this hand shape.</p>
+            </div>
+            <button
+              type="button"
+              onClick={onToggleHint}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-brass-400/40 bg-brass-400/10 px-4 py-2 text-sm font-semibold text-brass-400 transition hover:bg-brass-400/15"
+            >
+              <Lightbulb className="h-4 w-4" />
+              {showHint ? 'Hide Hint' : 'Show Hint'}
+            </button>
+          </div>
+
+          {showHint ? (
+            <div className="mt-4 rounded-3xl border border-brass-400/25 bg-brass-400/10 px-5 py-4 text-slate-100">
+              <p className="text-xs uppercase tracking-[0.3em] text-brass-400">{hint.category}</p>
+              <p className="mt-2 text-lg font-semibold text-cream">{hint.label}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-200">{hint.content}</p>
+            </div>
+          ) : null}
         </div>
 
         <div className="grid gap-3 md:grid-cols-5">
