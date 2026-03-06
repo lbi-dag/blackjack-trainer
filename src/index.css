@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color: #f3efe3;
+    background:
+      radial-gradient(circle at top, rgba(35, 85, 68, 0.45), transparent 38%),
+      linear-gradient(180deg, #081110 0%, #05120e 60%, #030806 100%);
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  button {
+    font: inherit;
+  }
+}
+
+@layer components {
+  .table-shell {
+    @apply relative overflow-hidden rounded-[2rem] border border-brass-500/30 bg-charcoal-950/80 shadow-table backdrop-blur;
+  }
+
+  .felt-sheen {
+    background:
+      radial-gradient(circle at top, rgba(76, 175, 132, 0.18), transparent 35%),
+      linear-gradient(160deg, rgba(10, 42, 33, 0.95), rgba(8, 17, 16, 0.95));
+  }
+}
