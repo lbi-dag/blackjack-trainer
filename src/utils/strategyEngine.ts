@@ -79,6 +79,10 @@ function shouldSurrender(input: StrategyDecisionInput, dealerKey: DealerKey): bo
     return false;
   }
 
+  if (isSoftHand(input.playerCards)) {
+    return false;
+  }
+
   const pairRank = getPairRank(input.playerCards);
   const handValue = getHandValue(input.playerCards);
 
@@ -198,3 +202,4 @@ export function describeDecision(input: StrategyExplanationInput): string {
 export function formatMoveLabel(move: Move): string {
   return move.charAt(0).toUpperCase() + move.slice(1);
 }
+

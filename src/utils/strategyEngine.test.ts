@@ -30,6 +30,8 @@ describe('getPerfectMove', () => {
     expect(getMove(['A', '7'], '3')).toBe('double');
     expect(getMove(['A', '7'], '9')).toBe('hit');
     expect(getMove(['A', '8'], '6')).toBe('stand');
+    expect(getMove(['A', '4'], '10')).toBe('hit');
+    expect(getMove(['A', '5'], 'A')).toBe('hit');
   });
 
   it('matches pair decisions', () => {
@@ -38,3 +40,4 @@ describe('getPerfectMove', () => {
     expect(getMove(['A', 'A'], '6')).toBe('split');
   });
 });
+
